@@ -1,29 +1,38 @@
 #include <string>
 #include <vector>
-#include <set>
+#include<queue>
 
 using namespace std;
 
 int solution(vector<int> priorities, int location) {
-    int answer = 0;
-    
-    set<pair<int, int>> s;
-    for (int i = 0; i < priorities.size(); i++)
+    int answer = 1;
+    queue<pair<int,int>> q;
+    priority_queue<int> pq;
+    for (int i = 0; i<priorities.size(); i++)
     {
-        s.insert({ -priorities[i], i } );
+        q.push({ i, priorities[i] });
+        pq.push(priorities[i]);
     }
     
-    int count = 1;
-    for (const auto& i : s)
+    while (1)
     {
-
-        if (i.second == location)
+        pair<int, int> qfront = q.front();
+        q.pop();
+        if (pq.top() == qfront.second)
         {
-            answer = count;
-            break;
+            if(qfront.first == location)
+            { 
+                break;
+            }
+            else {
+                answer++;
+                pq.pop();
+            }
         }
-        count++;
+        else {
+            q.push(qfront);
+        }
     }
-
+    
     return answer;
 }
